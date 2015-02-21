@@ -57,6 +57,11 @@ public class BreadthFirstSearch {
 		goal.add(0);
 	}
 
+	/**
+	 * Search for a solution
+	 * 
+	 * @return true if a solutions is found, else false
+	 */
 	public boolean Search() {
 
 		// Return true if the starting state is the goal state
@@ -104,6 +109,12 @@ public class BreadthFirstSearch {
 		}
 	}
 
+	/**
+	 * Applies the possible actions to a state
+	 * 
+	 * @param node
+	 *            The node representing the state to apply actions to
+	 */
 	private void applyActions(ArrayList<Integer> node) {
 
 		// Reset childNodes
@@ -118,7 +129,7 @@ public class BreadthFirstSearch {
 		// Get the boat's position
 		int boatPosition = node.get(2);
 
-		// Applies actions to give the child nodes new states
+		// Apply actions to give the child nodes new states
 
 		// One missionary goes by boat
 		createChildState(childNodes.get(0), 1, 0, boatPosition);
@@ -150,9 +161,22 @@ public class BreadthFirstSearch {
 		}
 	}
 
+	/**
+	 * Create a child state
+	 * 
+	 * @param node
+	 *            The node with the state to modify
+	 * @param missionaries
+	 *            The number of missionaries traveling by boat
+	 * @param cannibals
+	 *            The number of missionaries traveling by boat
+	 * @param boatPostition
+	 *            The current position of the boat
+	 */
 	private void createChildState(ArrayList<Integer> node, int missionaries,
 			int cannibals, int boatPostition) {
 
+		// Check where the boat is, modify the state accordingly
 		if (boatPostition == 1) {
 			node.set(0, node.get(0) - missionaries);
 			node.set(1, node.get(1) - cannibals);
@@ -162,7 +186,5 @@ public class BreadthFirstSearch {
 			node.set(1, node.get(1) + cannibals);
 			node.set(2, node.get(2) + 1);
 		}
-
 	}
-
 }
