@@ -88,7 +88,7 @@ public class BreadthFirstSearch {
 				// frontier
 				if (!explored.contains(tmpNode) && !frontier.contains(tmpNode)) {
 
-					// If it doesn't, check if tmpNode equals goal
+					// Check if tmpNode equals goal
 					if (tmpNode.equals(goal)) {
 
 						// Return true if so
@@ -135,6 +135,19 @@ public class BreadthFirstSearch {
 		// One of each goes by boat
 		createChildState(childNodes.get(4), 1, 1, boatPosition);
 
+		// Iterate through childNodes
+		for (ArrayList<Integer> tmpNode : childNodes) {
+
+			// Check if tmpNode was created by an illegal action, remove if so
+			if (tmpNode.get(0) < 0 || tmpNode.get(0) > 3) {
+
+				childNodes.remove(tmpNode);
+
+			} else if (tmpNode.get(1) < 0 || tmpNode.get(1) > 3) {
+
+				childNodes.remove(tmpNode);
+			}
+		}
 	}
 
 	private void createChildState(ArrayList<Integer> node, int missionaries,
