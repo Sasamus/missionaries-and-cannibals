@@ -1,5 +1,7 @@
 package testing;
 
+import search.BreadthFirstSearch;
+
 /**
  * Class with main method used for testing/running the program
  * 
@@ -12,6 +14,9 @@ public class Tester {
 	 */
 	public static void main(String[] args) {
 		
+		BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch();
+		
+		System.out.println(breadthFirstSearch.Search());
 
 	}
 
