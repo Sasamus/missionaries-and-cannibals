@@ -91,8 +91,6 @@ public class BreadthFirstSearch {
 			// Iterate through childNodes
 			for (ArrayList<Integer> tmpNode : childNodes) {
 				
-				System.out.println("Boo"); // Aint happening
-				
 //				System.out.println(tmpNode.get(0) + ":" + tmpNode.get(1) + ":" + tmpNode.get(2));
 
 				// Check if an equivalent of tmpNode exists in explored or
@@ -124,7 +122,7 @@ public class BreadthFirstSearch {
 	private void applyActions(ArrayList<Integer> node) {
 
 		// Reset childNodes
-		ArrayList<ArrayList<Integer>> childNodes = new ArrayList<ArrayList<Integer>>();
+		childNodes = new ArrayList<ArrayList<Integer>>();
 
 		// Initialize the child nodes to their parent's state
 		for (int i = 0; i < 5; i++) {
@@ -162,19 +160,27 @@ public class BreadthFirstSearch {
 		// One of each goes by boat
 		createChildState(childNodes.get(4), 1, 1, boatPosition);
 
+		// And ArrayList tp hold the child nodes to remove
+		ArrayList<ArrayList<Integer>> removeChildNodes = new ArrayList<ArrayList<Integer>>();
+		
 		// Iterate through childNodes
 		for (ArrayList<Integer> tmpNode : childNodes) {
 
-			// Check if tmpNode was created by an illegal action, remove if so
+			// Check if tmpNode was created by an illegal action,
+			// if it was, add tmpNode to removeChildNodes
 			if (tmpNode.get(0) < 0 || tmpNode.get(0) > 3) {
 
-				childNodes.remove(tmpNode);
+				removeChildNodes.add(tmpNode);
+
 
 			} else if (tmpNode.get(1) < 0 || tmpNode.get(1) > 3) {
 
-				childNodes.remove(tmpNode);
+				removeChildNodes.add(tmpNode);
 			}
 		}
+		
+		// Remove the nodes in removeChildNodes from childNodes
+		childNodes.removeAll(removeChildNodes);
 	}
 
 	/**
