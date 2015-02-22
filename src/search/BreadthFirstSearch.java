@@ -2,6 +2,7 @@ package search;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -41,6 +42,11 @@ public class BreadthFirstSearch {
 	ArrayList<ArrayList<Integer>> childNodes = new ArrayList<ArrayList<Integer>>();
 
 	/**
+	 * A map that maps the child nodes to their parent node
+	 */
+	HashMap<ArrayList<Integer>, ArrayList<Integer>> parentMap = new HashMap<ArrayList<Integer>, ArrayList<Integer>>();
+
+	/**
 	 * Constructor
 	 */
 	public BreadthFirstSearch() {
@@ -49,7 +55,7 @@ public class BreadthFirstSearch {
 		node.add(3);
 		node.add(3);
 		node.add(1);
-		
+
 		// Add node to frontier
 		frontier.add(node);
 
@@ -62,9 +68,12 @@ public class BreadthFirstSearch {
 	/**
 	 * Search for a solution
 	 * 
+	 * @param solution
+	 *            An ArrayList with the nodes making up the path to the goal
+	 *            state
 	 * @return true if a solutions is found, else false
 	 */
-	public boolean Search() {
+	public boolean search(ArrayList<ArrayList<Integer>> solution) {
 
 		// Return true if the starting state is the goal state
 		if (node.equals(goal)) {
@@ -78,7 +87,7 @@ public class BreadthFirstSearch {
 			if (frontier.isEmpty()) {
 				return false;
 			}
-			
+
 			// Get a node form frontier
 			node = frontier.remove();
 
@@ -90,15 +99,38 @@ public class BreadthFirstSearch {
 
 			// Iterate through childNodes
 			for (ArrayList<Integer> tmpNode : childNodes) {
-				
-//				System.out.println(tmpNode.get(0) + ":" + tmpNode.get(1) + ":" + tmpNode.get(2));
 
 				// Check if an equivalent of tmpNode exists in explored or
 				// frontier
 				if (!explored.contains(tmpNode) && !frontier.contains(tmpNode)) {
 
+					// Map tmpNode to node, it's parent
+					parentMap.put(tmpNode, node);
+
 					// Check if tmpNode equals goal
 					if (tmpNode.equals(goal)) {
+
+						// Add tmpNode to solution
+						solution.add(tmpNode);
+
+						// An ArrayList to hold the parent node
+						ArrayList<Integer> parent;
+
+						// While tmpNode is a key in parentMap
+						while (parentMap.containsKey(tmpNode)) {
+
+							// Get parent of tmpNode from parentMap
+							parent = parentMap.get(tmpNode);
+
+							// Add parent to solution
+							solution.add(parent);
+
+							// Remove tmpNodes parent from parentMap
+							parentMap.remove(tmpNode);
+
+							// Set tmpNode to parent
+							tmpNode = parent;
+						}
 
 						// Return true if so
 						return true;
@@ -126,16 +158,15 @@ public class BreadthFirstSearch {
 
 		// Initialize the child nodes to their parent's state
 		for (int i = 0; i < 5; i++) {
-			
+
 			// An temporary node
 			ArrayList<Integer> tmpNode = new ArrayList<Integer>();
-			
+
 			// Set the state of tmpNode to match node
 			tmpNode.add(node.get(0));
 			tmpNode.add(node.get(1));
 			tmpNode.add(node.get(2));
 
-			
 			// Add tmpNode to childNodes
 			childNodes.add(tmpNode);
 		}
@@ -162,25 +193,37 @@ public class BreadthFirstSearch {
 
 		// And ArrayList tp hold the child nodes to remove
 		ArrayList<ArrayList<Integer>> removeChildNodes = new ArrayList<ArrayList<Integer>>();
-		
+
 		// Iterate through childNodes
 		for (ArrayList<Integer> tmpNode : childNodes) {
 
-			// Check if tmpNode was created by an illegal action,
-			// if it was, add tmpNode to removeChildNodes
+			// Check if tmpNode was created by an illegal action
 			if (tmpNode.get(0) < 0 || tmpNode.get(0) > 3) {
 
+				// Add tmpNode to removeChildNodes if so
 				removeChildNodes.add(tmpNode);
-
 
 			} else if (tmpNode.get(1) < 0 || tmpNode.get(1) > 3) {
 
+				// Add tmpNode to removeChildNodes if so
+				removeChildNodes.add(tmpNode);
+			}
+			// Check if tmpNode is an illegal state
+			else if (tmpNode.get(0) < tmpNode.get(1) && tmpNode.get(0) > 0) {
+
+				// Add tmpNode to removeChildNodes if so
+				removeChildNodes.add(tmpNode);
+			} else if ((3 - tmpNode.get(0)) < (3 - tmpNode.get(1))
+					&& (3 - tmpNode.get(0)) > 0) {
+
+				// Add tmpNode to removeChildNodes if so
 				removeChildNodes.add(tmpNode);
 			}
 		}
-		
+
 		// Remove the nodes in removeChildNodes from childNodes
 		childNodes.removeAll(removeChildNodes);
+
 	}
 
 	/**
