@@ -2,7 +2,6 @@ package search;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -50,6 +49,9 @@ public class BreadthFirstSearch {
 		node.add(3);
 		node.add(3);
 		node.add(1);
+		
+		// Add node to frontier
+		frontier.add(node);
 
 		// Initialize goal to the goal state
 		goal.add(0);
@@ -76,7 +78,7 @@ public class BreadthFirstSearch {
 			if (frontier.isEmpty()) {
 				return false;
 			}
-
+			
 			// Get a node form frontier
 			node = frontier.remove();
 
@@ -88,6 +90,10 @@ public class BreadthFirstSearch {
 
 			// Iterate through childNodes
 			for (ArrayList<Integer> tmpNode : childNodes) {
+				
+				System.out.println("Boo"); // Aint happening
+				
+//				System.out.println(tmpNode.get(0) + ":" + tmpNode.get(1) + ":" + tmpNode.get(2));
 
 				// Check if an equivalent of tmpNode exists in explored or
 				// frontier
@@ -122,8 +128,18 @@ public class BreadthFirstSearch {
 
 		// Initialize the child nodes to their parent's state
 		for (int i = 0; i < 5; i++) {
-			childNodes.add((ArrayList<Integer>) Arrays.asList(node.get(0),
-					node.get(1), node.get(2)));
+			
+			// An temporary node
+			ArrayList<Integer> tmpNode = new ArrayList<Integer>();
+			
+			// Set the state of tmpNode to match node
+			tmpNode.add(node.get(0));
+			tmpNode.add(node.get(1));
+			tmpNode.add(node.get(2));
+
+			
+			// Add tmpNode to childNodes
+			childNodes.add(tmpNode);
 		}
 
 		// Get the boat's position
