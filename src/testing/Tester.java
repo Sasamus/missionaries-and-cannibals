@@ -26,9 +26,10 @@ public class Tester {
 		// Call breadthFirstSearch's search method and check what it returns
 		if(breadthFirstSearch.search(solution)){
 			
-			// If true, preint the solution
+			// If true, print the solution
 			
 			System.out.println("Solution Found!");
+			System.out.println("In " + (solution.size() - 1) + " steps");
 			System.out.println("It goes as follows:");
 			
 			Collections.reverse(solution);
